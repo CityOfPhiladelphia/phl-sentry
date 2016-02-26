@@ -1,16 +1,11 @@
 #!/usr/bin/env bash
 
-# Starting the web service
-# https://docs.getsentry.com/on-premise/server/installation/#starting-the-web-service
-sentry start
+set -x
 
-# Starting the background workers
-# https://docs.getsentry.com/on-premise/server/installation/#starting-background-workers
-sentry celery worker
-
-# Starting the cron process
-# https://docs.getsentry.com/on-premise/server/installation/#starting-the-cron-process
-sentry celery beat
+# Set up the upstart processes
+sudo honcho export upstart /etc/init \
+	--app sentry \
+	--user nobody
 
 # Set up nginx
 # https://docs.getsentry.com/on-premise/server/installation/#proxying-with-nginx
