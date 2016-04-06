@@ -2,7 +2,7 @@
 # Starting the web service
 # https://docs.getsentry.com/on-premise/server/installation/#starting-the-web-service
 
-web: sentry start --bind $IP:$PORT
+web: sentry start --bind unix:/tmp/sentry.sock --workers ${WORKERS:-4}
 
 
 ##
