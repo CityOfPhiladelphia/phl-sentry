@@ -16,9 +16,9 @@ sudo apt-get install -y postgresql
 # Redis
 if [ "$(redis-server -v)" = "" ]
 then
-	sudo add-apt-repository ppa:chris-lea/redis-server
+	sudo add-apt-repository -y ppa:chris-lea/redis-server
 	sudo apt-get update
-	sudo apt-get install -y redis
+	sudo apt-get install -y redis-server
 fi
 
 # Node.js
