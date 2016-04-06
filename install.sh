@@ -29,7 +29,11 @@ then
 	sudo apt-get install -y build-essential
 fi
 
-sudo pip install -r requirements.txt
+# Install python requirements
+sudo pip install --requirement requirements.txt
+
+# Install node requirements
+sudo npm install --global
 
 
 
@@ -98,5 +102,8 @@ EOF
 # https://docs.getsentry.com/on-premise/server/installation/#running-migrations
 
 sentry upgrade
-sentry createuser
-sentry django collectstatic --noinput
+sentry createuser \
+    --email "$SENTRY_ADMIN_EMAIL" \
+    --superuser \
+    --no-input \
+    --no-password  # User will have to reset their password
