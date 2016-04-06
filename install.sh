@@ -32,8 +32,8 @@ fi
 # Install python requirements
 sudo pip install --requirement requirements.txt
 
-# Install node requirements
-sudo npm install --global
+# # Install node requirements
+# sudo npm install --global
 
 
 
