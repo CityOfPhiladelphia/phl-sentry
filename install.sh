@@ -37,11 +37,16 @@ sudo pip install --requirement requirements.txt
 
 
 
-# Initialize Sentry configuration
-# https://docs.getsentry.com/on-premise/server/installation/#initializing-the-configuration
-
+# Create the folder for the Sentry configuration
 export SENTRY_CONF=/srv/sentry
+sudo mkdir --parents $SENTRY_CONF
+sudo chown $(whoami):$(whoami) $SENTRY_CONF
 echo "export SENTRY_CONF=$SENTRY_CONF" >> ~/.bashrc
+
+
+
+# Initialize the configuration, and set DB values
+# https://docs.getsentry.com/on-premise/server/installation/#initializing-the-configuration
 
 sentry init $SENTRY_CONF
 cat >> $SENTRY_CONF/sentry.conf.py <<EOF
