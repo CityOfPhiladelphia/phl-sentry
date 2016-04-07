@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -ex
+SCRIPT_DIR=$(dirname $0)
 
 # Install Dependencies
 # ~~~~~~~~~~~~~~~~~~~~
@@ -49,6 +50,13 @@ echo "export SENTRY_CONF=$SENTRY_CONF" >> ~/.bashrc
 # https://docs.getsentry.com/on-premise/server/installation/#initializing-the-configuration
 
 sentry init $SENTRY_CONF
+
+honcho run bash
+cat > $SENTRY_CONF/config.yml <<EOF
+system.secret-key: $($SCRIPT_DIR/generate_secret_key)
+EOF
+exit
+
 cat >> $SENTRY_CONF/sentry.conf.py <<EOF
 DATABASES = {
     'default': {
@@ -67,31 +75,33 @@ EOF
 # Configure Redis
 # https://docs.getsentry.com/on-premise/server/installation/#configure-redis
 
-cat >> $SENTRY_CONF/sentry.conf.py <<EOF
-SENTRY_REDIS_OPTIONS = {
-    'hosts': {
-        0: {
-            'host': os.environ.get('REDIS_HOST', '127.0.0.1'),
-            'port': int(os.environ.get('REDIS_PORT', 6379)),
-            'timeout': int(os.environ.get('REDIS_TIMEOUT', 3)),
-            'password': os.environ.get('REDIS_PASSWORD', None)
-        }
-    }
-}
+honcho run bash
+cat >> $SENTRY_CONF/config.yml <<EOF
+redis.clusters:
+  default:
+    hosts:
+      0:
+        host: ${REDIS_HOST:-127.0.0.1}
+        port: ${REDIS_PORT:-6379}
+        password: $REDIS_PASSWORD
 EOF
+exit
 
 
 
 # Configure outbound mail
 # https://docs.getsentry.com/on-premise/server/installation/#configure-outbound-mail
 
-cat >> $SENTRY_CONF/sentry.conf.py <<EOF
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 25))
-EMAIL_USE_TLS = (os.environ.get('EMAIL_USE_TLS', 'False') == 'True')
+honcho run bash
+cat >> $SENTRY_CONF/config.yml <<EOF
+mail.from: '${EMAIL_FROM:-sentry@localhost}'
+mail.host: '${EMAIL_HOST:-localhost}'
+mail.port: ${EMAIL_PORT:-25}
+mail.username: '$EMAIL_HOST_USER'
+mail.password: '$EMAIL_HOST_PASSWORD'
+mail.use-tls: ${EMAIL_USE_TLS:-false}
 EOF
+exit
 
 
 
@@ -106,8 +116,8 @@ EOF
 # Run migrations
 # https://docs.getsentry.com/on-premise/server/installation/#running-migrations
 
-sentry upgrade
-sentry createuser \
+honcho run sentry upgrade --noinput
+honcho run sentry createuser \
     --email "$SENTRY_ADMIN_EMAIL" \
     --superuser \
     --no-input \

@@ -9,10 +9,10 @@ sudo pip install --requirement requirements.txt
 # sudo npm install --global
 
 # Run migrations
-sentry upgrade
+honcho run sentry upgrade
 
 # Collect static files for nginx to serve
-sentry django collectstatic --noinput
+honcho run sentry django collectstatic --noinput
 
 # Set up the upstart processes
 sudo honcho export upstart /etc/init \
@@ -22,6 +22,7 @@ sudo honcho export upstart /etc/init \
 
 # Set up nginx
 # https://docs.getsentry.com/on-premise/server/installation/#proxying-with-nginx
+sudo bash
 cat > /etc/nginx/sites-available/sentry <<EOF
 location / {
   proxy_pass         unix:/tmp/sentry.sock;
@@ -34,3 +35,4 @@ location / {
 EOF
 rm -f /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/sentry /etc/nginx/sites-enabled/sentry
+exit
