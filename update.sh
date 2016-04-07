@@ -60,6 +60,12 @@ cat >> $SENTRY_CONF/sentry.conf.extension.py <<EOF
 STATIC_ROOT = '$SENTRY_CONF/static'
 EOF
 
+# Turn off new user registration
+# https://docs.getsentry.com/on-premise/server/config/#authentication
+cat >> $SENTRY_CONF/sentry.conf.extension.py <<EOF
+SENTRY_FEATURES['auth:register'] = False
+EOF
+
 # Run migrations
 sentry upgrade
 
