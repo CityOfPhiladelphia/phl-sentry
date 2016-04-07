@@ -2,7 +2,7 @@
 # Starting the web service
 # https://docs.getsentry.com/on-premise/server/installation/#starting-the-web-service
 
-web: sentry start --bind unix:/tmp/sentry.sock --workers ${WORKERS:-4}
+web: sentry start --bind ${$INTERNAL_IP:-127.0.0.1}:${$INTERNAL_PORT:-8000} --workers ${WORKERS:-4}
 
 
 ##
