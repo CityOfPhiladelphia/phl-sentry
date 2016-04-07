@@ -46,71 +46,16 @@ echo "export SENTRY_CONF=$SENTRY_CONF" >> ~/.bashrc
 
 
 
-# Initialize the configuration, and set DB values
+# Initialize Sentry Configuration
 # https://docs.getsentry.com/on-premise/server/installation/#initializing-the-configuration
 
 sentry init $SENTRY_CONF
-
-honcho run bash
-cat > $SENTRY_CONF/config.yml <<EOF
-system.secret-key: $($SCRIPT_DIR/generate_secret_key)
-EOF
-exit
-
+touch $SENTRY_CONF/sentry.conf.extension.py
 cat >> $SENTRY_CONF/sentry.conf.py <<EOF
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ.get('DB_ENGINE', 'sentry.db.postgres'),
-        'NAME': os.environ.get('DB_NAME', 'sentry'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'postgres'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-    }
-}
+with open("$SENTRY_CONF/sentry.conf.extension.py") as f:
+    code = compile(f.read(), "sentry.conf.extension.py", 'exec')
+    exec(code, globals(), locals())
 EOF
-
-
-
-# Configure Redis
-# https://docs.getsentry.com/on-premise/server/installation/#configure-redis
-
-honcho run bash
-cat >> $SENTRY_CONF/config.yml <<EOF
-redis.clusters:
-  default:
-    hosts:
-      0:
-        host: ${REDIS_HOST:-127.0.0.1}
-        port: ${REDIS_PORT:-6379}
-        password: $REDIS_PASSWORD
-EOF
-exit
-
-
-
-# Configure outbound mail
-# https://docs.getsentry.com/on-premise/server/installation/#configure-outbound-mail
-
-honcho run bash
-cat >> $SENTRY_CONF/config.yml <<EOF
-mail.from: '${EMAIL_FROM:-sentry@localhost}'
-mail.host: '${EMAIL_HOST:-localhost}'
-mail.port: ${EMAIL_PORT:-25}
-mail.username: '$EMAIL_HOST_USER'
-mail.password: '$EMAIL_HOST_PASSWORD'
-mail.use-tls: ${EMAIL_USE_TLS:-false}
-EOF
-exit
-
-
-
-# Static files
-
-cat >> $SENTRY_CONF/sentry.conf.py <<EOF
-STATIC_ROOT = '$SENTRY_CONF/static'
-EOF
-
 
 
 # Run migrations
