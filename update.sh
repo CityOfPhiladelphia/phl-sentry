@@ -3,6 +3,7 @@
 set -x
 SCRIPT_DIR=$(dirname $0)
 
+
 # Install python requirements
 sudo pip install --requirement requirements.txt
 
@@ -57,10 +58,10 @@ STATIC_ROOT = '$SENTRY_CONF/static'
 EOF
 
 # Run migrations
-honcho run sentry upgrade
+sentry upgrade
 
 # Collect static files for nginx to serve
-honcho run sentry django collectstatic --noinput
+sentry django collectstatic --noinput
 
 # Set up the upstart processes
 sudo honcho export upstart /etc/init \

@@ -10,6 +10,9 @@ set -ex
 sudo apt-get update
 sudo apt-get install -y python-setuptools python-pip python-dev libxslt1-dev libxml2-dev libz-dev libffi-dev libssl-dev libpq-dev libyaml-dev
 
+# Nginx
+sudo apt-get install -y nginx
+
 # PostgreSQL
 sudo apt-get install -y postgresql
 
@@ -38,7 +41,6 @@ sudo pip install --requirement requirements.txt
 
 
 # Create the folder for the Sentry configuration
-export SENTRY_CONF=/srv/sentry
 sudo mkdir --parents $SENTRY_CONF
 sudo chown $(whoami):$(whoami) $SENTRY_CONF
 echo "export SENTRY_CONF=$SENTRY_CONF" >> ~/.bashrc
@@ -60,8 +62,8 @@ EOF
 # Run migrations
 # https://docs.getsentry.com/on-premise/server/installation/#running-migrations
 
-honcho run sentry upgrade --noinput
-honcho run sentry createuser \
+sentry upgrade --noinput
+sentry createuser \
     --email "$SENTRY_ADMIN_EMAIL" \
     --superuser \
     --no-input \
