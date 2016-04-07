@@ -13,7 +13,8 @@ sudo pip install --requirement requirements.txt
 # Initialize the configuration, and set DB values
 # https://docs.getsentry.com/on-premise/server/installation/#initializing-the-configuration
 cat > $SENTRY_CONF/config.yml <<EOF
-system.secret-key: $($SCRIPT_DIR/generate_secret_key)
+system.secret-key: '$($SCRIPT_DIR/generate_secret_key)'
+
 EOF
 
 cat > $SENTRY_CONF/sentry.conf.extension.py <<EOF
@@ -36,9 +37,10 @@ redis.clusters:
   default:
     hosts:
       0:
-        host: ${REDIS_HOST:-127.0.0.1}
+        host: '${REDIS_HOST:-127.0.0.1}'
         port: ${REDIS_PORT:-6379}
-        password: $REDIS_PASSWORD
+        password: '$REDIS_PASSWORD'
+
 EOF
 
 # Configure outbound mail
