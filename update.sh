@@ -76,7 +76,7 @@ sudo honcho export upstart /etc/init \
 # https://docs.getsentry.com/on-premise/server/installation/#proxying-with-nginx
 sudo cp $SCRIPT_DIR/nginx.conf /etc/nginx/sites-available/sentry
 sudo rm -f /etc/nginx/sites-enabled/default
-sudo ln -s /etc/nginx/sites-available/sentry /etc/nginx/sites-enabled/sentry
+sudo ln -fs /etc/nginx/sites-available/sentry /etc/nginx/sites-enabled/sentry
 
 # Re/start the Sentry server
 sudo service sentry restart
