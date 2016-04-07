@@ -9,11 +9,11 @@ web: sentry start --bind ${INTERNAL_IP:-127.0.0.1}:${INTERNAL_PORT:-8000} --work
 # Starting the background workers
 # https://docs.getsentry.com/on-premise/server/installation/#starting-background-workers
 
-worker: sentry celery worker
+worker: sentry celery worker --pidfile $SENTRY_CONF/pids/celeryworker.pid
 
 
 ##
 # Starting the scheduled process
 # https://docs.getsentry.com/on-premise/server/installation/#starting-the-cron-process
 
-scheduler: sentry celery beat
+scheduler: sentry celery beat --pidfile $SENTRY_CONF/pids/celerybeat.pid

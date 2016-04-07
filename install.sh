@@ -45,6 +45,9 @@ sudo mkdir --parents $SENTRY_CONF
 sudo chown $(whoami):$(whoami) $SENTRY_CONF
 echo "export SENTRY_CONF=$SENTRY_CONF" >> ~/.bashrc
 
+sudo mkdir --parents $SENTRY_CONF/pids
+sudo chown www-data:adm $SENTRY_CONF/pids
+
 
 
 # Initialize Sentry Configuration
