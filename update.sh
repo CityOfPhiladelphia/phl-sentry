@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -x
+SCRIPT_DIR=$(dirname $0)
 
 # Install python requirements
 sudo pip install --requirement requirements.txt

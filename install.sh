@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -ex
-SCRIPT_DIR=$(dirname $0)
 
 # Install Dependencies
 # ~~~~~~~~~~~~~~~~~~~~
