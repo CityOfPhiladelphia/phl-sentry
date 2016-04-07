@@ -49,7 +49,8 @@ mail.host: '${EMAIL_HOST:-localhost}'
 mail.port: ${EMAIL_PORT:-25}
 mail.username: '$EMAIL_HOST_USER'
 mail.password: '$EMAIL_HOST_PASSWORD'
-mail.use-tls: ${EMAIL_USE_TLS:-false}
+mail.use-tls: $(tr '[:upper:]' '[:lower:]' ${EMAIL_USE_TLS:-false})
+
 EOF
 
 # Static files
