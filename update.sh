@@ -28,6 +28,15 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT', '5432'),
     }
 }
+
+EOF
+
+# Allowed Hosts
+cat >> $SENTRY_CONF/sentry.conf.extension.py <<EOF
+# Override ALLOWED_HOSTS if there is an override provided.
+if 'ALLOWED_HOSTS' in os.environ:
+    ALLOWED_HOSTS = [host.strip() for host in os.environ['ALLOWED_HOSTS'].split(',')]
+
 EOF
 
 # Configure Redis
