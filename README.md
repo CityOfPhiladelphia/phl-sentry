@@ -13,10 +13,10 @@ Then, set up your environment settings:
     cp .env.template .env
     # Make appropriate modifications to .env file.
 
-Create a database. If you're using a local PostgreSQL DB, you can just run `./initdb.sh`.
+Create a database. If you're using a local PostgreSQL DB, you can just run `honcho run ./initdb`.
 
-    honcho run ./install.sh
+    honcho run ./install
 
 Then, each time you deploy, run:
 
-    honcho run ./update.sh
+    honcho run ./update
