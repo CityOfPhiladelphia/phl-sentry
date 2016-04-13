@@ -31,6 +31,12 @@ DATABASES = {
 
 EOF
 
+# Debug
+cat >> $SENTRY_CONF/sentry.conf.extension.py <<EOF
+DEBUG = (os.environ.get('DEBUG', 'False').title() == 'True')
+
+EOF
+
 # Allowed Hosts
 cat >> $SENTRY_CONF/sentry.conf.extension.py <<EOF
 # Override ALLOWED_HOSTS if there is an override provided.
