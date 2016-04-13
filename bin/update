@@ -2,7 +2,7 @@
 
 set -ex
 SCRIPT_DIR=$(dirname $0)
-
+BASE_DIR=$(dirname $SCRIPT_DIR)
 
 # Install python requirements
 sudo pip install --requirement requirements.txt
@@ -85,11 +85,11 @@ sentry django collectstatic --noinput
 sudo honcho export upstart /etc/init \
 	--app sentry \
 	--user nobody \
-	--procfile Procfile-vm
+	--procfile $BASE_DIR/Procfile-vm
 
 # Set up nginx
 # https://docs.getsentry.com/on-premise/server/installation/#proxying-with-nginx
-sudo cp $SCRIPT_DIR/nginx.conf /etc/nginx/sites-available/sentry
+sudo cp <($SCRIPT_DIR/generate_nginx_conf) /etc/nginx/sites-available/sentry
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo ln -fs /etc/nginx/sites-available/sentry /etc/nginx/sites-enabled/sentry
 
