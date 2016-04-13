@@ -89,7 +89,7 @@ sudo honcho export upstart /etc/init \
 
 # Set up nginx
 # https://docs.getsentry.com/on-premise/server/installation/#proxying-with-nginx
-sudo bash -c 'echo "$($SCRIPT_DIR/generate_nginx_conf)" > /etc/nginx/sites-available/sentry'
+echo "$($SCRIPT_DIR/generate_nginx_conf)" | sudo tee /etc/nginx/sites-available/sentry
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo ln -fs /etc/nginx/sites-available/sentry /etc/nginx/sites-enabled/sentry
 
