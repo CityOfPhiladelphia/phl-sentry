@@ -21,3 +21,19 @@ Then, each time you deploy, run:
 
     honcho run bin/update
 
+
+Installing SSL Certificate
+--------------------------
+
+After you have a CRT/PEM file for your subdomain, copy that file to the server
+along with the key file, and place them wherever the SSL_CERTIFICATE_KEY and
+SSL_CERTIFICATE environment variables say to.
+
+    ssh ubuntu@<machine> mkdir /srv/sentry/ssl/
+    scp /path/to/ssl/keys/* ubuntu@<machine>:/srv/sentry/ssl/
+
+Debugging
+---------
+
+    sudo nginx -t
+    sudo netstat -tulpn

@@ -11,7 +11,7 @@ server {
     ssl_certificate     $SSL_CERTIFICATE;
     ssl_certificate_key $SSL_CERTIFICATE_KEY;
 
-    root $SENTRY_CONFIG;
+    root $SENTRY_CONF;
 
     location / {
         proxy_pass_header Server;
@@ -27,7 +27,7 @@ server {
 
     location /static/ {
         autoindex on;
-        alias $SENTRY_CONFIG/static/;
+        alias $SENTRY_CONF/static/;
     }
 }
 EOF
