@@ -29,6 +29,8 @@ DATABASES = {
     }
 }
 
+SENTRY_DEFAULT_TIME_ZONE = os.environ.get('TIME_ZONE', 'US/Eastern')
+
 EOF
 
 # Debug
