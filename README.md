@@ -1,3 +1,6 @@
+This repository contains scripts for deploying Sentry to a machine running
+Ubuntu 14.04.
+
 Initial Deployment Steps
 ------------------------
 
